@@ -9,20 +9,28 @@ import androidx.navigation.compose.rememberNavController
 import com.designsystem.theme.CoinTheme
 import com.designsystem.theme.Colors
 import com.navigation.Destinations
+import com.raya_challenge.di.appModule
+import com.raya_challenge.home.homeGraph
 import com.raya_challenge.splash.splashGraph
+import org.koin.compose.KoinApplication
 
 @Composable
 fun App() {
-    CoinTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Colors().background
-        ) {
-            NavHost(
-                navController = rememberNavController(),
-                startDestination = Destinations.Splash
+    KoinApplication(application = { modules(appModule()) }) {
+        CoinTheme {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = Colors().background
             ) {
-                splashGraph()
+                val navController = rememberNavController()
+
+                NavHost(
+                    navController = navController,
+                    startDestination = Destinations.Splash
+                ) {
+                    splashGraph(navController)
+                    homeGraph()
+                }
             }
         }
     }
