@@ -33,7 +33,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":core:common:designSystem"))
-            implementation(project(":core:service"))
+            implementation(project(":core:common:navigation"))
+            implementation(project(":core:domain"))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
