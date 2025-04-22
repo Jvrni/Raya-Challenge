@@ -14,12 +14,12 @@ fun NavGraphBuilder.splashGraph(navController: NavController) {
         val viewModel: SplashViewModel = getKoin().get()
         val (state, event, effect) = use(viewModel = viewModel)
 
-        SplashScreen(state, event, viewModel)
-
         effect.collectInLaunchedEffect { dispatch ->
             when (dispatch) {
                 is SplashContract.Effect.NavigateToHome -> navController.navigate(Destinations.Home)
             }
         }
+
+        SplashScreen(state, event, viewModel)
     }
 }
