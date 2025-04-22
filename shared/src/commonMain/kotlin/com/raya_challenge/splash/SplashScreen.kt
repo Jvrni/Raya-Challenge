@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.designsystem.theme.Colors
+import com.raya_challenge.splash.contract.SplashContract
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import raya_challenge.shared.generated.resources.Res
@@ -24,24 +27,28 @@ import raya_challenge.shared.generated.resources.coin_black
 import raya_challenge.shared.generated.resources.coin_light
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(
+    state: SplashContract.State,
+    event: (SplashContract.Event) -> Unit,
+    viewModel: SplashViewModel
+) {
     val animationVisibility = remember { mutableStateOf(false) }
 
     Row(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(Colors().background),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         AnimatedVisibility(
             visible = animationVisibility.value,
-            enter = fadeIn(animationSpec = tween(800)) + slideInHorizontally(
+            enter = fadeIn(animationSpec = tween(state.animationDuration)) + slideInHorizontally(
                 animationSpec = tween(
-                    800
-                ), initialOffsetX = { 700 }),
-            exit = fadeOut(animationSpec = tween(800)) + slideOutHorizontally(
+                    state.animationDuration
+                ), initialOffsetX = { state.initialOffsetX }),
+            exit = fadeOut(animationSpec = tween(state.animationDuration)) + slideOutHorizontally(
                 animationSpec = tween(
-                    800
-                ), targetOffsetX = { -700 })
+                    state.animationDuration
+                ), targetOffsetX = { state.targetOffsetX })
         ) {
             Image(
                 painter = painterResource(
@@ -55,7 +62,10 @@ fun SplashScreen() {
 
     LaunchedEffect(Unit) {
         animationVisibility.value = true
-        delay(2000L)
+        delay(state.delay)
         animationVisibility.value = false
+        delay(state.delay / 2)
+
+        event.invoke(SplashContract.Event.NavigateToHome)
     }
 }

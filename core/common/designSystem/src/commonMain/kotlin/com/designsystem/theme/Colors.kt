@@ -9,23 +9,25 @@ import androidx.compose.ui.graphics.Color
 
 val primaryLightColor = Color(0xFF6200EE)
 val secondaryLightColor = Color(0xFF03DAC5)
-val tertiaryLightColor = Color(0xFF3700B3)
 
 val primaryDarkColor = Color(0xFF6200EE)
 val secondaryDarkColor = Color(0xFF03DAC5)
-val tertiaryDarkColor = Color(0xFF3700B3)
+val white = Color(0xFFFFFFFF)
+val black = Color(0x00000000)
 
 
 val lightColor = lightColorScheme(
     primary = primaryLightColor,
     secondary = secondaryLightColor,
-    tertiary = tertiaryLightColor
+    tertiary = black,
+    background = white
 )
 
 val darkColor = darkColorScheme(
     primary = primaryDarkColor,
     secondary = secondaryDarkColor,
-    tertiary = tertiaryDarkColor
+    tertiary = white,
+    background = black
 )
 
 @Composable

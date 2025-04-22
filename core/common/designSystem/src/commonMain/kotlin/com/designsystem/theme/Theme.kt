@@ -5,5 +5,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun CoinTheme(content: @Composable () -> Unit) {
-    MaterialTheme(content = content)
+    MaterialTheme(content = content, colorScheme = Colors())
 }
