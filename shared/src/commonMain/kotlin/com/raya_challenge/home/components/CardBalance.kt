@@ -2,6 +2,7 @@ package com.raya_challenge.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,16 +25,25 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.designsystem.extensions.passwordTransformation
 import com.designsystem.theme.Colors
 import org.jetbrains.compose.resources.painterResource
 import raya_challenge.shared.generated.resources.Res
-import raya_challenge.shared.generated.resources.arrow_right
+import raya_challenge.shared.generated.resources.ic_arrow_right
 import raya_challenge.shared.generated.resources.ic_bitcoin
 import raya_challenge.shared.generated.resources.ic_ethereum
 import raya_challenge.shared.generated.resources.ic_hide_eye
+import raya_challenge.shared.generated.resources.ic_show_eye
 
 @Composable
-fun CardBalance() {
+fun CardBalance(
+    balance: String,
+    balanceInBitcoin: String,
+    balanceInEthereum: String,
+    showBalance: Boolean,
+    onCurrencyType: () -> Unit,
+    onConversion: () -> Unit,
+) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
         colors = CardDefaults.cardColors(containerColor = Colors().background),
@@ -44,7 +54,6 @@ fun CardBalance() {
                 .fillMaxWidth()
                 .padding(8.dp),
         ) {
-
             Text(
                 text = "Balance",
                 style = TextStyle(fontWeight = FontWeight.Medium).copy(
@@ -63,7 +72,7 @@ fun CardBalance() {
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth().weight(1f),
-                    text = "$1000.00",
+                    text = "$${balance.passwordTransformation(!showBalance)}",
                     style = TextStyle(fontWeight = FontWeight.Bold).copy(
                         lineHeightStyle = LineHeightStyle(
                             alignment = LineHeightStyle.Alignment.Center,
@@ -73,13 +82,17 @@ fun CardBalance() {
                     fontSize = 32.sp,
                     color = Color.Black
                 )
+
                 Image(
-                    modifier = Modifier.size(28.dp).padding(end = 4.dp),
-                    painter = painterResource(Res.drawable.ic_hide_eye),
+                    modifier = Modifier.size(28.dp).padding(end = 4.dp).clickable {
+                        onCurrencyType.invoke()
+                    },
+                    painter = painterResource(if (showBalance) Res.drawable.ic_hide_eye else Res.drawable.ic_show_eye),
                     contentDescription = "",
                     colorFilter = ColorFilter.tint(Color.Black)
                 )
             }
+
             Row(
                 modifier = Modifier
                     .padding(top = 16.dp)
@@ -89,7 +102,8 @@ fun CardBalance() {
                         Colors().background,
                         shape = RoundedCornerShape(30.dp)
                     )
-                    .padding(4.dp),
+                    .padding(4.dp)
+                    .clickable { onConversion.invoke() },
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -116,7 +130,7 @@ fun CardBalance() {
 
                 Text(
                     modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 4.dp),
-                    text = "$1000.00",
+                    text = "$${balanceInBitcoin.passwordTransformation(!showBalance)}",
                     color = Colors().onBackground,
                     fontSize = 13.sp,
                     textAlign = TextAlign.End,
@@ -131,7 +145,7 @@ fun CardBalance() {
 
                 Image(
                     modifier = Modifier.size(30.dp),
-                    painter = painterResource(Res.drawable.arrow_right),
+                    painter = painterResource(Res.drawable.ic_arrow_right),
                     contentDescription = "",
                     colorFilter = ColorFilter.tint(Color.Black)
                 )
@@ -146,7 +160,8 @@ fun CardBalance() {
                         Colors().background,
                         shape = RoundedCornerShape(30.dp)
                     )
-                    .padding(4.dp),
+                    .padding(4.dp)
+                    .clickable { onConversion.invoke() },
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -173,7 +188,7 @@ fun CardBalance() {
 
                 Text(
                     modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 4.dp),
-                    text = "$1000.00",
+                    text = "$${balanceInEthereum.passwordTransformation(!showBalance)}",
                     color = Colors().onBackground,
                     fontSize = 13.sp,
                     textAlign = TextAlign.End,
@@ -188,7 +203,7 @@ fun CardBalance() {
 
                 Image(
                     modifier = Modifier.size(30.dp),
-                    painter = painterResource(Res.drawable.arrow_right),
+                    painter = painterResource(Res.drawable.ic_arrow_right),
                     contentDescription = "",
                     colorFilter = ColorFilter.tint(Color.Black)
                 )

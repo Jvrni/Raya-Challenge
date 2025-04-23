@@ -55,7 +55,7 @@ fun OptionsSelect(entities: List<OptionSelectEntity>) {
 
             OptionButton(item, selected) {
                 selectedIndex.intValue = index
-                item.onClick.invoke(item.id)
+                item.onClick.invoke()
             }
         }
     }
@@ -65,7 +65,7 @@ fun OptionsSelect(entities: List<OptionSelectEntity>) {
 private fun OptionButton(
     entity: OptionSelectEntity,
     selected: Boolean,
-    onClick: (id: Int) -> Unit
+    onClick: (currencyType: String) -> Unit
 ) {
     val background = if (selected) Colors().outline else Colors().background
     val textColor = if (selected) Color.White else Color.Black
@@ -75,12 +75,7 @@ private fun OptionButton(
             .padding(horizontal = 8.dp)
             .clip(RoundedCornerShape(30.dp))
             .background(background, shape = RoundedCornerShape(30.dp))
-            .clickable(
-                interactionSource = MutableInteractionSource(),
-                indication = rememberRipple(color = Color.Transparent)
-            ) {
-                onClick.invoke(entity.id)
-            }
+            .clickable { onClick.invoke(entity.currencyType) }
             .zIndex(2f)
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -103,8 +98,8 @@ private fun OptionButton(
 }
 
 data class OptionSelectEntity(
-    val id: Int,
+    val currencyType: String,
     val text: String,
     val icon: DrawableResource,
-    val onClick: (id: Int) -> Unit
+    val onClick: () -> Unit
 )

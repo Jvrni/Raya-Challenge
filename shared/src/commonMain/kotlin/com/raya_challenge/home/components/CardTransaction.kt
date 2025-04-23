@@ -19,12 +19,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.designsystem.extensions.passwordTransformation
+import com.domain.models.Transaction
 import org.jetbrains.compose.resources.painterResource
 import raya_challenge.shared.generated.resources.Res
 import raya_challenge.shared.generated.resources.ic_bitcoin
 
 @Composable
-fun CardTransaction() {
+fun CardTransaction(transaction: Transaction, showBalance: Boolean) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -39,8 +41,7 @@ fun CardTransaction() {
         ) {
             Image(
                 modifier = Modifier
-                    .size(50.dp)
-                    .padding(start = 6.dp),
+                    .size(40.dp),
                 painter = painterResource(Res.drawable.ic_bitcoin),
                 contentDescription = "",
             )
@@ -52,7 +53,7 @@ fun CardTransaction() {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    "Balance",
+                    text = transaction.title,
                     color = Color.Black,
                     style = TextStyle(fontWeight = FontWeight.Medium).copy(
                         lineHeightStyle = LineHeightStyle(
@@ -63,7 +64,7 @@ fun CardTransaction() {
                 )
 
                 Text(
-                    text = "01/02",
+                    text = transaction.date,
                     color = Color.Black,
                     fontSize = 12.sp,
                     style = TextStyle.Default.copy(
@@ -76,7 +77,7 @@ fun CardTransaction() {
             }
 
             Text(
-                text = "$1000.00",
+                text = "$${transaction.value.toString().passwordTransformation(!showBalance)}",
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 color = Color.Black
             )
