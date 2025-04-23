@@ -1,5 +1,6 @@
 package com.raya_challenge.home.contract
 
+import com.domain.models.CryptoType
 import com.domain.models.CurrencyType
 import com.domain.models.Transaction
 import com.raya_challenge.UnidirectionalViewModel
@@ -14,14 +15,20 @@ interface HomeContract : UnidirectionalViewModel<HomeContract.State, HomeContrac
         val balanceInBitcoin: String = "0.0",
         val balanceInEthereum: String = "0.0",
         val showBalance: Boolean = true,
-        val showBottomSheet: Boolean = false
+        val showBottomSheet: Boolean = false,
+        val currencyType: CurrencyType = CurrencyType.USD,
+        val cryptoType: CryptoType = CryptoType.BTC
     )
 
     sealed class Event {
         data object OnStart : Event()
         data class OnSelectCurrency(val currencyType: CurrencyType) : Event()
         data object OnShowBalance : Event()
-        data class ShowBottomSheet(val condition: Boolean = false) : Event()
+        data class ShowBottomSheet(
+            val condition: Boolean = false,
+            val currencyType: CurrencyType = CurrencyType.USD,
+            val cryptoType: CryptoType = CryptoType.BTC
+        ) : Event()
     }
 
     sealed class Effect {

@@ -16,10 +16,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,21 +28,22 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import raya_challenge.shared.generated.resources.Res
 import raya_challenge.shared.generated.resources.ic_arrow_right_duo
-import raya_challenge.shared.generated.resources.ic_bitcoin
 import raya_challenge.shared.generated.resources.ic_close
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConversionBottomSheet(
+    entity: ConversionBottomSheetEntity,
     modalBottomSheetState: SheetState,
     onDismissRequest: () -> Unit
 ) {
-    var amountValue by remember { mutableStateOf("") }
-    var resultValue by remember { mutableStateOf("") }
+    val amountValue = remember { mutableStateOf(entity.currency) }
+    val resultValue = remember { mutableStateOf(entity.toCurrency) }
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -94,12 +93,12 @@ fun ConversionBottomSheet(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth().weight(1f),
                     shape = CircleShape,
-                    value = amountValue,
-                    onValueChange = { amountValue = it },
+                    value = amountValue.value,
+                    onValueChange = { amountValue.value = it },
                     leadingIcon = {
                         Image(
                             modifier = Modifier.size(24.dp),
-                            painter = painterResource(Res.drawable.ic_bitcoin),
+                            painter = painterResource(entity.currencyIcon),
                             contentDescription = "",
                         )
                     }
@@ -117,12 +116,12 @@ fun ConversionBottomSheet(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth().weight(1f),
                     shape = CircleShape,
-                    value = amountValue,
-                    onValueChange = { amountValue = it },
+                    value = resultValue.value,
+                    onValueChange = { amountValue.value = it },
                     leadingIcon = {
                         Image(
                             modifier = Modifier.size(24.dp),
-                            painter = painterResource(Res.drawable.ic_bitcoin),
+                            painter = painterResource(entity.toCurrencyIcon),
                             contentDescription = "",
                         )
                     }
@@ -132,4 +131,9 @@ fun ConversionBottomSheet(
     }
 }
 
-data class ConversionBottomSheetEntity(val actualCurrency: String, val desiredCurrency: String)
+data class ConversionBottomSheetEntity(
+    val currency: String,
+    val currencyIcon: DrawableResource,
+    val toCurrency: String,
+    val toCurrencyIcon: DrawableResource,
+)

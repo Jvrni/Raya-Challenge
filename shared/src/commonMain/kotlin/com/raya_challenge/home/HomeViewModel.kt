@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.domain.GetBalance
 import com.domain.GetPrice
 import com.domain.GetTransactions
+import com.domain.models.CryptoType
 import com.domain.models.CurrencyType
 import com.raya_challenge.base.NumberFormat
 import com.raya_challenge.home.contract.HomeContract
@@ -34,7 +35,11 @@ class HomeViewModel(
         is HomeContract.Event.OnStart -> onStart()
         is HomeContract.Event.OnSelectCurrency -> onStart(event.currencyType)
         is HomeContract.Event.OnShowBalance -> onShowBalance()
-        is HomeContract.Event.ShowBottomSheet -> onShowBottomSheet(event.condition)
+        is HomeContract.Event.ShowBottomSheet -> onShowBottomSheet(
+            event.condition,
+            event.currencyType,
+            event.cryptoType
+        )
     }
 
     private fun onStart(currencyType: CurrencyType = CurrencyType.USD) {
@@ -49,23 +54,28 @@ class HomeViewModel(
                 HomeContract.State(
                     balance = NumberFormat().format(balance.current),
                     transactions = transactions,
-                    balanceInBitcoin = NumberFormat().format(balance.current / when (currencyType) {
-                        CurrencyType.USD -> prices.bitcoin.usd
-                        CurrencyType.ARS -> prices.bitcoin.ars
-                    }),
-                    balanceInEthereum = NumberFormat().format(balance.current / when (currencyType) {
-                        CurrencyType.USD -> prices.ethereum.usd
-                        CurrencyType.ARS -> prices.ethereum.ars
-                    }),
-                    isLoading = false
+                    balanceInBitcoin = NumberFormat().format(
+                        balance.current / when (currencyType) {
+                            CurrencyType.USD -> prices.bitcoin.usd
+                            else -> prices.bitcoin.ars
+                        }
+                    ),
+                    balanceInEthereum = NumberFormat().format(
+                        balance.current / when (currencyType) {
+                            CurrencyType.USD -> prices.ethereum.usd
+                            else -> prices.ethereum.ars
+                        }
+                    ),
+                    isLoading = false,
+                    currencyType = currencyType
                 )
             }
-            .catch { error ->
-                _state.update { it.copy(isLoading = false, isError = true) }
-            }
-            .collect { state ->
-                _state.update { state }
-            }
+                .catch { error ->
+                    _state.update { it.copy(isLoading = false, isError = true) }
+                }
+                .collect { state ->
+                    _state.update { state }
+                }
         }
     }
 
@@ -73,7 +83,17 @@ class HomeViewModel(
         _state.update { state.value.copy(showBalance = !it.showBalance) }
     }
 
-    private fun onShowBottomSheet(condition: Boolean) {
-        _state.update { state.value.copy(showBottomSheet = condition) }
+    private fun onShowBottomSheet(
+        condition: Boolean,
+        currencyType: CurrencyType,
+        cryptoType: CryptoType
+    ) {
+        _state.update {
+            state.value.copy(
+                showBottomSheet = condition,
+                currencyType = currencyType,
+                cryptoType = cryptoType
+            )
+        }
     }
 }

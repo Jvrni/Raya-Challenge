@@ -20,9 +20,17 @@ import androidx.compose.ui.unit.sp
 import com.raya_challenge.home.components.CardBalance
 import com.raya_challenge.home.components.CardTransaction
 import com.designsystem.theme.Colors
+import com.domain.models.CryptoType
+import com.domain.models.CurrencyType
 import com.raya_challenge.home.components.ConversionBottomSheet
+import com.raya_challenge.home.components.ConversionBottomSheetEntity
 import com.raya_challenge.home.components.HeaderOptions
 import com.raya_challenge.home.contract.HomeContract
+import raya_challenge.shared.generated.resources.Res
+import raya_challenge.shared.generated.resources.ic_ars_flag
+import raya_challenge.shared.generated.resources.ic_bitcoin
+import raya_challenge.shared.generated.resources.ic_ethereum
+import raya_challenge.shared.generated.resources.ic_usd_flag
 
 @Composable
 fun HomeScreen(
@@ -70,7 +78,15 @@ private fun Content(
                 state.balanceInEthereum,
                 state.showBalance,
                 onCurrencyType = { event.invoke(HomeContract.Event.OnShowBalance) },
-                onConversion = { event.invoke(HomeContract.Event.ShowBottomSheet(true)) }
+                onConversion = {
+                    event.invoke(
+                        HomeContract.Event.ShowBottomSheet(
+                            true,
+                            state.currencyType,
+                            it
+                        )
+                    )
+                }
             )
         }
 
@@ -94,6 +110,18 @@ private fun Content(
 
     if (state.showBottomSheet)
         ConversionBottomSheet(
+            entity = ConversionBottomSheetEntity(
+                currency = "1",
+                currencyIcon = when (state.currencyType) {
+                    CurrencyType.USD -> Res.drawable.ic_usd_flag
+                    else -> Res.drawable.ic_ars_flag
+                },
+                toCurrency = state.balanceInBitcoin, // TODO fix
+                toCurrencyIcon = when (state.cryptoType) {
+                    CryptoType.BTC -> Res.drawable.ic_bitcoin
+                    else -> Res.drawable.ic_ethereum
+                },
+            ),
             modalBottomSheetState = rememberModalBottomSheetState(),
             onDismissRequest = { event.invoke(HomeContract.Event.ShowBottomSheet(false)) }
         )

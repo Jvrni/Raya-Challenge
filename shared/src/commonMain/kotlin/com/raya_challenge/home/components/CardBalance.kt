@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.designsystem.extensions.passwordTransformation
 import com.designsystem.theme.Colors
+import com.domain.models.CryptoType
+import com.domain.models.CurrencyType
 import org.jetbrains.compose.resources.painterResource
 import raya_challenge.shared.generated.resources.Res
 import raya_challenge.shared.generated.resources.ic_arrow_right
@@ -42,7 +44,7 @@ fun CardBalance(
     balanceInEthereum: String,
     showBalance: Boolean,
     onCurrencyType: () -> Unit,
-    onConversion: () -> Unit,
+    onConversion: (cryptoType: CryptoType) -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
@@ -103,7 +105,7 @@ fun CardBalance(
                         shape = RoundedCornerShape(30.dp)
                     )
                     .padding(4.dp)
-                    .clickable { onConversion.invoke() },
+                    .clickable { onConversion.invoke(CryptoType.BTC) },
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -161,7 +163,7 @@ fun CardBalance(
                         shape = RoundedCornerShape(30.dp)
                     )
                     .padding(4.dp)
-                    .clickable { onConversion.invoke() },
+                    .clickable { onConversion.invoke(CryptoType.ETH) },
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
