@@ -1,6 +1,28 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.codingfeline.buildkonfig.compiler.FieldSpec
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinX.serialization)
+    id("com.codingfeline.buildkonfig") version "0.15.1"
+}
+
+buildkonfig {
+    packageName = "com.service"
+
+    defaultConfigs {
+        val apiEndpoint = "api.coingecko.com"
+        val apiKey: String = gradleLocalProperties(rootDir, providers).getProperty("API_KEY")
+
+        require(apiKey.isNotEmpty()) {
+            "Register your api key from developer and place it in local.properties as `API_KEY`"
+        }
+
+        buildConfigField(FieldSpec.Type.STRING,"API_KEY", apiKey)
+        buildConfigField(FieldSpec.Type.STRING,"API_ENDPOINT", apiEndpoint)
+    }
 }
 
 kotlin {
@@ -58,8 +80,13 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":core:domain"))
+
                 implementation(libs.kotlin.stdlib)
-                // Add KMP dependencies here
+                implementation(libs.bundles.ktor)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.kotlin.serialization)
+                implementation(libs.koin.compose)
             }
         }
 
@@ -71,9 +98,7 @@ kotlin {
 
         androidMain {
             dependencies {
-                // Add Android-specific dependencies here. Note that this source set depends on
-                // commonMain by default and will correctly pull the Android artifacts of any KMP
-                // dependencies declared in commonMain.
+                implementation(libs.ktor.client.android)
             }
         }
 
@@ -87,11 +112,7 @@ kotlin {
 
         iosMain {
             dependencies {
-                // Add iOS-specific dependencies here. This a source set created by Kotlin Gradle
-                // Plugin (KGP) that each specific iOS target (e.g., iosX64) depends on as
-                // part of KMP’s default source set hierarchy. Note that this source set depends
-                // on common by default and will correctly pull the iOS artifacts of any
-                // KMP dependencies declared in commonMain.
+                implementation(libs.ktor.client.darwin)
             }
         }
     }

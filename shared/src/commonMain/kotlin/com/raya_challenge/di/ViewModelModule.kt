@@ -9,6 +9,6 @@ val provideViewModelModule = module {
         SplashViewModel()
     }
     single {
-        HomeViewModel()
+        HomeViewModel(get(), get(), get())
     }
 }
