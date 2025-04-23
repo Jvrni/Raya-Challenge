@@ -1,5 +1,6 @@
 package com.raya_challenge.home
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.navigation.Destinations
@@ -13,11 +14,14 @@ fun NavGraphBuilder.homeGraph() {
         val viewModel: HomeViewModel = getKoin().get()
         val (state, event, effect) = use(viewModel = viewModel)
 
-        event.invoke(HomeContract.Event.OnStart)
-
-        effect.collectInLaunchedEffect { dispatch ->
+        LaunchedEffect(Unit) {
+            event.invoke(HomeContract.Event.OnStart)
         }
 
-        HomeScreen(state, viewModel)
+        effect.collectInLaunchedEffect { dispatch ->
+
+        }
+
+        HomeScreen(state, event, viewModel)
     }
 }
