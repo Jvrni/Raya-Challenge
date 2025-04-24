@@ -17,7 +17,11 @@ interface HomeContract : UnidirectionalViewModel<HomeContract.State, HomeContrac
         val showBalance: Boolean = true,
         val showBottomSheet: Boolean = false,
         val currencyType: CurrencyType = CurrencyType.USD,
-        val cryptoType: CryptoType = CryptoType.BTC
+        val cryptoType: CryptoType = CryptoType.BTC,
+        val bitcoinPrice: String = "0.0",
+        val ethereumPrice: String = "0.0",
+        val conversionCurrencyPrice: String = "0.0",
+        val conversionCryptoPrice: String = "0.0",
     )
 
     sealed class Event {
@@ -29,6 +33,8 @@ interface HomeContract : UnidirectionalViewModel<HomeContract.State, HomeContrac
             val currencyType: CurrencyType = CurrencyType.USD,
             val cryptoType: CryptoType = CryptoType.BTC
         ) : Event()
+        data class OnConversionCurrency(val value: String) : Event()
+        data class OnConversionCrypto(val value: String) : Event()
     }
 
     sealed class Effect {
