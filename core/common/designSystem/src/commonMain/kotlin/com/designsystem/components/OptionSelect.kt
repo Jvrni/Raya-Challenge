@@ -3,7 +3,6 @@ package com.designsystem.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,11 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.TabPosition
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.material3.Text
+import androidx.compose.material.TabPosition
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material.Text
+import androidx.compose.material.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,7 +34,7 @@ fun OptionsSelect(entities: List<OptionSelectEntity>) {
 
     TabRow(
         selectedTabIndex = selectedIndex.intValue,
-        containerColor = Colors().background,
+        backgroundColor = Colors().background,
         modifier = Modifier.padding(vertical = 8.dp, horizontal = 32.dp),
         indicator = { tabPositions: List<TabPosition> ->
             Box(
@@ -55,7 +54,7 @@ fun OptionsSelect(entities: List<OptionSelectEntity>) {
 
             OptionButton(item, selected) {
                 selectedIndex.intValue = index
-                item.onClick.invoke(item.id)
+                item.onClick.invoke()
             }
         }
     }
@@ -65,7 +64,7 @@ fun OptionsSelect(entities: List<OptionSelectEntity>) {
 private fun OptionButton(
     entity: OptionSelectEntity,
     selected: Boolean,
-    onClick: (id: Int) -> Unit
+    onClick: (currencyType: String) -> Unit
 ) {
     val background = if (selected) Colors().outline else Colors().background
     val textColor = if (selected) Color.White else Color.Black
@@ -76,11 +75,9 @@ private fun OptionButton(
             .clip(RoundedCornerShape(30.dp))
             .background(background, shape = RoundedCornerShape(30.dp))
             .clickable(
-                interactionSource = MutableInteractionSource(),
-                indication = rememberRipple(color = Color.Transparent)
-            ) {
-                onClick.invoke(entity.id)
-            }
+                interactionSource = null,
+                indication = ripple(color = Color.Transparent)
+            ) { onClick.invoke(entity.currencyType) }
             .zIndex(2f)
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -103,8 +100,8 @@ private fun OptionButton(
 }
 
 data class OptionSelectEntity(
-    val id: Int,
+    val currencyType: String,
     val text: String,
     val icon: DrawableResource,
-    val onClick: (id: Int) -> Unit
+    val onClick: () -> Unit
 )

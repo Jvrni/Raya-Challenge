@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.domain.GetBalance
 import com.domain.GetPrice
 import com.domain.GetTransactions
+import com.domain.models.CryptoType
 import com.domain.models.CurrencyType
 import com.raya_challenge.base.NumberFormat
 import com.raya_challenge.home.contract.HomeContract
@@ -34,7 +35,15 @@ class HomeViewModel(
         is HomeContract.Event.OnStart -> onStart()
         is HomeContract.Event.OnSelectCurrency -> onStart(event.currencyType)
         is HomeContract.Event.OnShowBalance -> onShowBalance()
-        is HomeContract.Event.ShowBottomSheet -> onShowBottomSheet(event.condition)
+        is HomeContract.Event.ShowBottomSheet -> onShowBottomSheet(
+            event.condition,
+            event.currencyType,
+            event.cryptoType
+        )
+
+        is HomeContract.Event.OnConversionCurrency -> onConversionCurrency(event.value)
+
+        is HomeContract.Event.OnConversionCrypto -> onConversionCrypto(event.value)
     }
 
     private fun onStart(currencyType: CurrencyType = CurrencyType.USD) {
@@ -46,26 +55,36 @@ class HomeViewModel(
                 getBalance(currencyType),
                 getTransactions()
             ) { prices, balance, transactions ->
+                val bitcoinPrice = when (currencyType) {
+                    CurrencyType.USD -> prices.bitcoin.usd
+                    else -> prices.bitcoin.ars
+                }
+
+                val ethereumPrice = when (currencyType) {
+                    CurrencyType.USD -> prices.ethereum.usd
+                    else -> prices.ethereum.ars
+                }
+
+                val balanceInBitcoin = balance.current / bitcoinPrice
+                val balanceInEthereum = balance.current / ethereumPrice
+
                 HomeContract.State(
-                    balance = NumberFormat().format(balance.current),
+                    balance = NumberFormat().formatToString(balance.current),
                     transactions = transactions,
-                    balanceInBitcoin = NumberFormat().format(balance.current / when (currencyType) {
-                        CurrencyType.USD -> prices.bitcoin.usd
-                        CurrencyType.ARS -> prices.bitcoin.ars
-                    }),
-                    balanceInEthereum = NumberFormat().format(balance.current / when (currencyType) {
-                        CurrencyType.USD -> prices.ethereum.usd
-                        CurrencyType.ARS -> prices.ethereum.ars
-                    }),
-                    isLoading = false
+                    balanceInBitcoin = NumberFormat().formatToString(balanceInBitcoin),
+                    balanceInEthereum = NumberFormat().formatToString(balanceInEthereum),
+                    isLoading = false,
+                    currencyType = currencyType,
+                    bitcoinPrice = NumberFormat().formatToString(balance.current / balanceInBitcoin),
+                    ethereumPrice = NumberFormat().formatToString(balance.current / balanceInEthereum)
                 )
             }
-            .catch { error ->
-                _state.update { it.copy(isLoading = false, isError = true) }
-            }
-            .collect { state ->
-                _state.update { state }
-            }
+                .catch { error ->
+                    _state.update { it.copy(isLoading = false, isError = true) }
+                }
+                .collect { state ->
+                    _state.update { state }
+                }
         }
     }
 
@@ -73,7 +92,54 @@ class HomeViewModel(
         _state.update { state.value.copy(showBalance = !it.showBalance) }
     }
 
-    private fun onShowBottomSheet(condition: Boolean) {
-        _state.update { state.value.copy(showBottomSheet = condition) }
+    private fun onShowBottomSheet(
+        condition: Boolean,
+        currencyType: CurrencyType,
+        cryptoType: CryptoType
+    ) {
+        _state.update {
+            state.value.copy(
+                showBottomSheet = condition,
+                currencyType = currencyType,
+                cryptoType = cryptoType,
+                conversionCurrencyPrice = state.value.balance,
+                conversionCryptoPrice = when (cryptoType) {
+                    CryptoType.BTC -> state.value.balanceInBitcoin
+                    else -> state.value.balanceInEthereum
+                }
+            )
+        }
+    }
+
+    private fun onConversionCurrency(value: String) {
+        val cryptoPryce = when (state.value.cryptoType) {
+            CryptoType.BTC -> state.value.bitcoinPrice
+            else -> state.value.ethereumPrice
+        }
+
+        _state.update {
+            it.copy(
+                conversionCurrencyPrice = value,
+                conversionCryptoPrice = NumberFormat().formatToString(
+                    NumberFormat().formatToDouble(value) / NumberFormat().formatToDouble(cryptoPryce)
+                )
+            )
+        }
+    }
+
+    private fun onConversionCrypto(value: String) {
+        val cryptoPryce = when (state.value.cryptoType) {
+            CryptoType.BTC -> state.value.bitcoinPrice
+            else -> state.value.ethereumPrice
+        }
+
+        _state.update {
+            it.copy(
+                conversionCurrencyPrice = NumberFormat().formatToString(
+                    NumberFormat().formatToDouble(cryptoPryce) * NumberFormat().formatToDouble(value)
+                ),
+                conversionCryptoPrice = value
+            )
+        }
     }
 }

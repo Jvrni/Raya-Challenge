@@ -1,5 +1,6 @@
 package com.raya_challenge.base
 
 expect class NumberFormat() {
-    fun format(double: Double) : String
+    fun formatToString(double: Double) : String
+    fun formatToDouble(string: String) : Double
 }
