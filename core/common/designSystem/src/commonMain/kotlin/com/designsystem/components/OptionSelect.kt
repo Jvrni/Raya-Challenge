@@ -3,7 +3,6 @@ package com.designsystem.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,11 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.TabPosition
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.material3.Text
+import androidx.compose.material.TabPosition
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material.Text
+import androidx.compose.material.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,7 +34,7 @@ fun OptionsSelect(entities: List<OptionSelectEntity>) {
 
     TabRow(
         selectedTabIndex = selectedIndex.intValue,
-        containerColor = Colors().background,
+        backgroundColor = Colors().background,
         modifier = Modifier.padding(vertical = 8.dp, horizontal = 32.dp),
         indicator = { tabPositions: List<TabPosition> ->
             Box(
@@ -75,7 +74,10 @@ private fun OptionButton(
             .padding(horizontal = 8.dp)
             .clip(RoundedCornerShape(30.dp))
             .background(background, shape = RoundedCornerShape(30.dp))
-            .clickable { onClick.invoke(entity.currencyType) }
+            .clickable(
+                interactionSource = null,
+                indication = ripple(color = Color.Transparent)
+            ) { onClick.invoke(entity.currencyType) }
             .zIndex(2f)
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,

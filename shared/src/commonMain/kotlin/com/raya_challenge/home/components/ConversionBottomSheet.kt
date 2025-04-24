@@ -1,6 +1,7 @@
 package com.raya_challenge.home.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -16,14 +18,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,11 +42,10 @@ import raya_challenge.shared.generated.resources.ic_close
 fun ConversionBottomSheet(
     entity: ConversionBottomSheetEntity,
     modalBottomSheetState: SheetState,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    onChangeCurrency: (value: String) -> Unit,
+    onChangeCrypto: (value: String) -> Unit
 ) {
-    val amountValue = remember { mutableStateOf(entity.currency) }
-    val resultValue = remember { mutableStateOf(entity.toCurrency) }
-
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = modalBottomSheetState,
@@ -78,7 +79,8 @@ fun ConversionBottomSheet(
                 )
 
                 Image(
-                    modifier = Modifier.size(30.dp),
+                    modifier = Modifier.size(30.dp).clip(CircleShape)
+                        .clickable { onDismissRequest.invoke() },
                     painter = painterResource(Res.drawable.ic_close),
                     contentDescription = "",
                     colorFilter = ColorFilter.tint(Color.Black)
@@ -93,15 +95,17 @@ fun ConversionBottomSheet(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth().weight(1f),
                     shape = CircleShape,
-                    value = amountValue.value,
-                    onValueChange = { amountValue.value = it },
+                    value = entity.currencyValue,
+                    onValueChange = { onChangeCurrency.invoke(it) },
                     leadingIcon = {
                         Image(
                             modifier = Modifier.size(24.dp),
                             painter = painterResource(entity.currencyIcon),
                             contentDescription = "",
                         )
-                    }
+                    },
+                    maxLines = 1,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
 
                 Image(
@@ -116,15 +120,17 @@ fun ConversionBottomSheet(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth().weight(1f),
                     shape = CircleShape,
-                    value = resultValue.value,
-                    onValueChange = { amountValue.value = it },
+                    value = entity.cryptoValue,
+                    onValueChange = { onChangeCrypto.invoke(it) },
                     leadingIcon = {
                         Image(
                             modifier = Modifier.size(24.dp),
-                            painter = painterResource(entity.toCurrencyIcon),
+                            painter = painterResource(entity.toCryptoIcon),
                             contentDescription = "",
                         )
-                    }
+                    },
+                    maxLines = 1,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
             }
         }
@@ -132,8 +138,8 @@ fun ConversionBottomSheet(
 }
 
 data class ConversionBottomSheetEntity(
-    val currency: String,
+    val currencyValue: String,
     val currencyIcon: DrawableResource,
-    val toCurrency: String,
-    val toCurrencyIcon: DrawableResource,
+    val cryptoValue: String,
+    val toCryptoIcon: DrawableResource,
 )

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -16,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -28,7 +30,6 @@ import androidx.compose.ui.unit.sp
 import com.designsystem.extensions.passwordTransformation
 import com.designsystem.theme.Colors
 import com.domain.models.CryptoType
-import com.domain.models.CurrencyType
 import org.jetbrains.compose.resources.painterResource
 import raya_challenge.shared.generated.resources.Res
 import raya_challenge.shared.generated.resources.ic_arrow_right
@@ -86,9 +87,13 @@ fun CardBalance(
                 )
 
                 Image(
-                    modifier = Modifier.size(28.dp).padding(end = 4.dp).clickable {
-                        onCurrencyType.invoke()
-                    },
+                    modifier = Modifier
+                        .size(28.dp)
+                        .padding(end = 4.dp)
+                        .clip(CircleShape)
+                        .clickable {
+                            onCurrencyType.invoke()
+                        },
                     painter = painterResource(if (showBalance) Res.drawable.ic_hide_eye else Res.drawable.ic_show_eye),
                     contentDescription = "",
                     colorFilter = ColorFilter.tint(Color.Black)
@@ -105,6 +110,7 @@ fun CardBalance(
                         shape = RoundedCornerShape(30.dp)
                     )
                     .padding(4.dp)
+                    .clip(RoundedCornerShape(30.dp))
                     .clickable { onConversion.invoke(CryptoType.BTC) },
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
@@ -163,6 +169,7 @@ fun CardBalance(
                         shape = RoundedCornerShape(30.dp)
                     )
                     .padding(4.dp)
+                    .clip(RoundedCornerShape(30.dp))
                     .clickable { onConversion.invoke(CryptoType.ETH) },
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
