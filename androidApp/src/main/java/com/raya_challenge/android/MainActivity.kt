@@ -11,6 +11,13 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import com.raya_challenge.App
 
+/**
+ * The main activity of the application.
+ *
+ * This class is the entry point for the application and is responsible for
+ * setting up the UI, enabling edge-to-edge display, and configuring the
+ * status bar color.
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

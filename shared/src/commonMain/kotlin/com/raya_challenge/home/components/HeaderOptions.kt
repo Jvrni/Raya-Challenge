@@ -22,6 +22,28 @@ import raya_challenge.shared.generated.resources.home_header_usd_label
 import raya_challenge.shared.generated.resources.ic_ars_flag
 import raya_challenge.shared.generated.resources.ic_usd_flag
 
+/**
+ * Displays the header options for the main screen, including a coin icon and a currency selector.
+ *
+ * This composable shows a row containing:
+ *  - A coin icon that changes based on the system's dark theme setting.
+ *  - An `OptionsSelect` component that allows the user to choose between different currencies (USD and ARS in this example).
+ *
+ * @param modifier The modifier to be applied to the row.
+ * @param action A lambda function that is invoked when a currency option is selected.
+ *               It receives the selected [CurrencyType] as a parameter.
+ *
+ * Example Usage:
+ * ```
+ * HeaderOptions(
+ *     modifier = Modifier.fillMaxWidth(),
+ *     action = { currency ->
+ *         println("Selected currency: $currency")
+ *         // Perform actions based on the selected currency
+ *     }
+ * )
+ * ```
+ */
 @Composable
 fun HeaderOptions(modifier: Modifier, action: (currencyType: CurrencyType) -> Unit) {
     Row(

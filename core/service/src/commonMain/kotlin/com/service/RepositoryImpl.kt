@@ -15,6 +15,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
+/**
+ * `RepositoryImpl` is a concrete implementation of the `Repository` interface.
+ * It handles data fetching and provides functionalities related to retrieving
+ * prices, balances, and transaction histories.
+ *
+ * @property httpClient The `HttpClient` instance used to make network requests.
+ */
 class RepositoryImpl(private val httpClient: HttpClient) : Repository {
 
     override fun getPrice(ids: String, vsCurrencies: String): Flow<Price> {
