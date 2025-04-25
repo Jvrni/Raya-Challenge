@@ -15,6 +15,7 @@ import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
 import androidx.compose.material.ripple
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -24,7 +25,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.designsystem.theme.Colors
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -34,7 +34,7 @@ fun OptionsSelect(entities: List<OptionSelectEntity>) {
 
     TabRow(
         selectedTabIndex = selectedIndex.intValue,
-        backgroundColor = Colors().background,
+        backgroundColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.padding(vertical = 8.dp, horizontal = 32.dp),
         indicator = { tabPositions: List<TabPosition> ->
             Box(
@@ -43,7 +43,7 @@ fun OptionsSelect(entities: List<OptionSelectEntity>) {
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
                     .clip(RoundedCornerShape(50))
-                    .background(Colors().outline)
+                    .background(MaterialTheme.colorScheme.outline)
                     .zIndex(1f)
             )
         },
@@ -66,8 +66,8 @@ private fun OptionButton(
     selected: Boolean,
     onClick: (currencyType: String) -> Unit
 ) {
-    val background = if (selected) Colors().outline else Colors().background
-    val textColor = if (selected) Color.White else Color.Black
+    val background = if (selected) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.background
+    val textColor = if (selected) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onBackground
 
     Row(
         modifier = Modifier

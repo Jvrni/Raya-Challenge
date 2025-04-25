@@ -42,22 +42,22 @@ class RepositoryImpl(private val httpClient: HttpClient) : Repository {
                 listOf(
                     Transaction(
                         title = "Google",
-                        value = "100.0",
+                        value = "100,0",
                         date = "07/02"
                     ),
                     Transaction(
                         title = "Apple",
-                        value = "40.0",
+                        value = "40,0",
                         date = "05/02"
                     ),
                     Transaction(
                         title = "Amazon",
-                        value = "70.0",
+                        value = "70,0",
                         date = "03/02"
                     ),
                     Transaction(
                         title = "Store",
-                        value = "302.0",
+                        value = "302,0",
                         date = "01/02"
                     )
                 )

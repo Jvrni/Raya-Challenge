@@ -13,9 +13,12 @@ import com.designsystem.components.OptionSelectEntity
 import com.designsystem.components.OptionsSelect
 import com.domain.models.CurrencyType
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import raya_challenge.shared.generated.resources.Res
 import raya_challenge.shared.generated.resources.coin_black
 import raya_challenge.shared.generated.resources.coin_light
+import raya_challenge.shared.generated.resources.home_header_ars_label
+import raya_challenge.shared.generated.resources.home_header_usd_label
 import raya_challenge.shared.generated.resources.ic_ars_flag
 import raya_challenge.shared.generated.resources.ic_usd_flag
 
@@ -39,13 +42,13 @@ fun HeaderOptions(modifier: Modifier, action: (currencyType: CurrencyType) -> Un
             entities = listOf(
                 OptionSelectEntity(
                     currencyType = CurrencyType.USD.name,
-                    text = "USD",
+                    text = stringResource(Res.string.home_header_usd_label),
                     icon = Res.drawable.ic_usd_flag,
                     onClick = { action.invoke(CurrencyType.USD) }
                 ),
                 OptionSelectEntity(
                     currencyType = CurrencyType.ARS.name,
-                    text = "ARS",
+                    text = stringResource(Res.string.home_header_ars_label),
                     icon = Res.drawable.ic_ars_flag,
                     onClick = { action.invoke(CurrencyType.ARS) }
                 )
