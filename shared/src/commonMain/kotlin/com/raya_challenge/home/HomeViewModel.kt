@@ -20,6 +20,21 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * [HomeViewModel] is a ViewModel responsible for managing the data and UI logic
+ * for the Home screen of the application.
+ *
+ * It interacts with the following use cases:
+ * - [getPrice]: Fetches the current prices of cryptocurrencies (Bitcoin and Ethereum).
+ * - [getBalance]: Fetches the user's current balance in a specified currency.
+ * - [getTransactions]: Fetches the user's transaction history.
+ *
+ * It exposes the UI state through [state] and any one-time UI events through [effect].
+ *
+ * @property getPrice Use case for retrieving cryptocurrency prices.
+ * @property getBalance Use case for retrieving the user's balance.
+ * @property getTransactions Use case for retrieving the user's transaction history.
+ */
 class HomeViewModel(
     private val getPrice: GetPrice,
     private val getBalance: GetBalance,

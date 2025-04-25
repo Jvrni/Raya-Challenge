@@ -45,6 +45,28 @@ import raya_challenge.shared.generated.resources.ic_bitcoin
 import raya_challenge.shared.generated.resources.ic_ethereum
 import raya_challenge.shared.generated.resources.ic_usd_flag
 
+/**
+ * The main composable function for the Home screen.
+ *
+ * This function renders the Home screen based on the provided [state]. It handles different
+ * states such as loading, error, and content display. It also allows the user to interact
+ * with the screen via [event] callbacks.
+ *
+ * @param state The current state of the Home screen. This determines what content is displayed.
+ * @param event A lambda function that allows the screen to send events to the ViewModel.
+ *              It takes a [HomeContract.Event] as input.
+ * @param viewModel The [HomeViewModel] instance associated with this screen, although only used for context and not directly in the screen code
+ *
+ * State Handling:
+ * - `state.isLoading`: Displays a [CircularProgressIndicator] while data is being loaded.
+ * - `state.isError`: Displays an error screen with an error image, title, description, and a retry button.
+ * - `else`: Displays the main content of the screen using the [Content] composable.
+ *
+ * Event Handling:
+ * - `HomeContract.Event.OnSelectCurrency`: Triggered when the user selects a new currency from the header, or when the retry button is clicked
+ *
+ * UI Components:
+ */
 @Composable
 fun HomeScreen(
     state: HomeContract.State,

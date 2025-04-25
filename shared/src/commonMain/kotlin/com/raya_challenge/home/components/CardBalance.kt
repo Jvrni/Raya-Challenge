@@ -39,6 +39,20 @@ import raya_challenge.shared.generated.resources.ic_ethereum
 import raya_challenge.shared.generated.resources.ic_hide_eye
 import raya_challenge.shared.generated.resources.ic_show_eye
 
+/**
+ * Composable function to display the user's card balance in different currencies.
+ *
+ * This composable displays the user's balance in a card format, including the balance in the main currency,
+ * Bitcoin, and Ethereum. It also provides functionality to toggle the visibility of the balance and navigate
+ * to conversion screens for Bitcoin and Ethereum.
+ *
+ * @param balance The user's balance in the main currency (e.g., USD).
+ * @param balanceInBitcoin The user's balance converted to Bitcoin.
+ * @param balanceInEthereum The user's balance converted to Ethereum.
+ * @param showBalance A boolean indicating whether the balance should be visible or hidden (masked).
+ * @param onCurrencyType Callback function invoked when the user clicks the eye icon to toggle the balance visibility.
+ * @param onConversion Callback function invoked when the user clicks on either the Bitcoin or Ethereum row,
+ */
 @Composable
 fun CardBalance(
     balance: String,

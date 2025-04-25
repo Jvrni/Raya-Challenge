@@ -2,6 +2,12 @@ package com.raya_challenge.splash.contract
 
 import com.raya_challenge.UnidirectionalViewModel
 
+/**
+ * Contract for the Splash screen's unidirectional view model.
+ *
+ * This interface defines the states, events, and effects associated with the Splash screen.
+ * It follows the Unidirectional Data Flow (UDF) pattern.
+ */
 interface SplashContract : UnidirectionalViewModel<SplashContract.State, SplashContract.Event, SplashContract.Effect> {
 
     data class State(
