@@ -13,25 +13,26 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.designsystem.extensions.passwordTransformation
-import com.designsystem.theme.Colors
 import com.domain.models.CryptoType
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import raya_challenge.shared.generated.resources.Res
+import raya_challenge.shared.generated.resources.home_card_balance_in_bitcoin_label
+import raya_challenge.shared.generated.resources.home_card_balance_in_ethereum_label
+import raya_challenge.shared.generated.resources.home_card_balance_label
+import raya_challenge.shared.generated.resources.home_symbol_price
 import raya_challenge.shared.generated.resources.ic_arrow_right
 import raya_challenge.shared.generated.resources.ic_bitcoin
 import raya_challenge.shared.generated.resources.ic_ethereum
@@ -49,7 +50,7 @@ fun CardBalance(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = Colors().background),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
@@ -58,14 +59,9 @@ fun CardBalance(
                 .padding(8.dp),
         ) {
             Text(
-                text = "Balance",
-                style = TextStyle(fontWeight = FontWeight.Medium).copy(
-                    lineHeightStyle = LineHeightStyle(
-                        alignment = LineHeightStyle.Alignment.Center,
-                        trim = LineHeightStyle.Trim.Both,
-                    )
-                ),
-                color = Color.Black
+                text = stringResource(Res.string.home_card_balance_label),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Row(
@@ -75,15 +71,11 @@ fun CardBalance(
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth().weight(1f),
-                    text = "$${balance.passwordTransformation(!showBalance)}",
-                    style = TextStyle(fontWeight = FontWeight.Bold).copy(
-                        lineHeightStyle = LineHeightStyle(
-                            alignment = LineHeightStyle.Alignment.Center,
-                            trim = LineHeightStyle.Trim.Both,
-                        )
+                    text = stringResource(Res.string.home_symbol_price).plus(
+                        "${balance.passwordTransformation(!showBalance)}"
                     ),
-                    fontSize = 32.sp,
-                    color = Color.Black
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 32.sp),
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Image(
@@ -96,7 +88,7 @@ fun CardBalance(
                         },
                     painter = painterResource(if (showBalance) Res.drawable.ic_hide_eye else Res.drawable.ic_show_eye),
                     contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Black)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
                 )
             }
 
@@ -106,7 +98,7 @@ fun CardBalance(
                     .fillMaxWidth()
                     .shadow(elevation = 4.dp, shape = RoundedCornerShape(30.dp))
                     .background(
-                        Colors().background,
+                        MaterialTheme.colorScheme.background,
                         shape = RoundedCornerShape(30.dp)
                     )
                     .padding(4.dp)
@@ -125,37 +117,26 @@ fun CardBalance(
 
                 Text(
                     modifier = Modifier.padding(start = 6.dp),
-                    text = "In Bitcoin",
-                    color = Colors().onBackground,
-                    fontSize = 13.sp,
-                    style = TextStyle.Default.copy(
-                        lineHeightStyle = LineHeightStyle(
-                            alignment = LineHeightStyle.Alignment.Center,
-                            trim = LineHeightStyle.Trim.Both,
-                        )
-                    )
+                    text = stringResource(Res.string.home_card_balance_in_bitcoin_label),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 13.sp)
                 )
 
                 Text(
                     modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 4.dp),
-                    text = "$${balanceInBitcoin.passwordTransformation(!showBalance)}",
-                    color = Colors().onBackground,
-                    fontSize = 13.sp,
+                    text = stringResource(Res.string.home_symbol_price).plus(
+                        "${balanceInBitcoin.passwordTransformation(!showBalance)}"
+                    ),
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.End,
-                    style = TextStyle.Default.copy(
-                        fontWeight = FontWeight.Bold,
-                        lineHeightStyle = LineHeightStyle(
-                            alignment = LineHeightStyle.Alignment.Center,
-                            trim = LineHeightStyle.Trim.Both,
-                        )
-                    )
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 13.sp)
                 )
 
                 Image(
                     modifier = Modifier.size(30.dp),
                     painter = painterResource(Res.drawable.ic_arrow_right),
                     contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Black)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
                 )
             }
 
@@ -165,7 +146,7 @@ fun CardBalance(
                     .fillMaxWidth()
                     .shadow(elevation = 4.dp, shape = RoundedCornerShape(30.dp))
                     .background(
-                        Colors().background,
+                        MaterialTheme.colorScheme.background,
                         shape = RoundedCornerShape(30.dp)
                     )
                     .padding(4.dp)
@@ -184,37 +165,27 @@ fun CardBalance(
 
                 Text(
                     modifier = Modifier.padding(start = 6.dp),
-                    text = "In Ethereum",
-                    color = Colors().onBackground,
-                    fontSize = 13.sp,
-                    style = TextStyle.Default.copy(
-                        lineHeightStyle = LineHeightStyle(
-                            alignment = LineHeightStyle.Alignment.Center,
-                            trim = LineHeightStyle.Trim.Both,
-                        )
-                    )
+                    text = stringResource(Res.string.home_card_balance_in_ethereum_label),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 13.sp)
                 )
 
                 Text(
                     modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 4.dp),
-                    text = "$${balanceInEthereum.passwordTransformation(!showBalance)}",
-                    color = Colors().onBackground,
+                    text = stringResource(Res.string.home_symbol_price).plus(
+                        "${balanceInEthereum.passwordTransformation(!showBalance)}"
+                    ),
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 13.sp,
                     textAlign = TextAlign.End,
-                    style = TextStyle.Default.copy(
-                        fontWeight = FontWeight.Bold,
-                        lineHeightStyle = LineHeightStyle(
-                            alignment = LineHeightStyle.Alignment.Center,
-                            trim = LineHeightStyle.Trim.Both,
-                        )
-                    )
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 13.sp)
                 )
 
                 Image(
                     modifier = Modifier.size(30.dp),
                     painter = painterResource(Res.drawable.ic_arrow_right),
                     contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Black)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
                 )
             }
         }

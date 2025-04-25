@@ -14,22 +14,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.raya_challenge.home.components.CardBalance
 import com.raya_challenge.home.components.CardTransaction
-import com.designsystem.theme.Colors
 import com.domain.models.CryptoType
 import com.domain.models.CurrencyType
 import com.raya_challenge.home.components.ConversionBottomSheet
@@ -37,8 +33,13 @@ import com.raya_challenge.home.components.ConversionBottomSheetEntity
 import com.raya_challenge.home.components.HeaderOptions
 import com.raya_challenge.home.contract.HomeContract
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import raya_challenge.shared.generated.resources.Res
 import raya_challenge.shared.generated.resources.error_state
+import raya_challenge.shared.generated.resources.home_error_button
+import raya_challenge.shared.generated.resources.home_error_description
+import raya_challenge.shared.generated.resources.home_error_title
+import raya_challenge.shared.generated.resources.home_transaction_label
 import raya_challenge.shared.generated.resources.ic_ars_flag
 import raya_challenge.shared.generated.resources.ic_bitcoin
 import raya_challenge.shared.generated.resources.ic_ethereum
@@ -51,7 +52,7 @@ fun HomeScreen(
     viewModel: HomeViewModel
 ) {
     Scaffold(
-        modifier = Modifier.background(Colors().background),
+        modifier = Modifier.background(MaterialTheme.colorScheme.background),
         topBar = {
             HeaderOptions(modifier = Modifier.padding(horizontal = 16.dp)) { currencyType ->
                 event.invoke(HomeContract.Event.OnSelectCurrency(currencyType))
@@ -79,42 +80,32 @@ fun HomeScreen(
 
                     Text(
                         modifier = Modifier.padding(top = 16.dp),
-                        text = "Oops!",
-                        color = Color.Black,
+                        text = stringResource(Res.string.home_error_title),
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontSize = 24.sp,
                         textAlign = TextAlign.Center,
-                        style = TextStyle(fontWeight = FontWeight.Bold).copy(
-                            lineHeightStyle = LineHeightStyle(
-                                alignment = LineHeightStyle.Alignment.Center,
-                                trim = LineHeightStyle.Trim.Both,
-                            )
-                        )
+                        style = MaterialTheme.typography.titleLarge
                     )
 
                     Text(
                         modifier = Modifier.padding(top = 16.dp),
-                        text = "An unexpected error has occurred. \nPlease try again!",
-                        color = Color.Black,
+                        text = stringResource(Res.string.home_error_description),
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center,
-                        style = TextStyle(fontWeight = FontWeight.Light).copy(
-                            lineHeightStyle = LineHeightStyle(
-                                alignment = LineHeightStyle.Alignment.Center,
-                                trim = LineHeightStyle.Trim.Both,
-                            )
-                        )
+                        style = MaterialTheme.typography.bodySmall
                     )
 
                     Button(
                         modifier = Modifier.padding(top = 24.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Black.copy(alpha = 0.5f)),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)),
                         elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 4.dp),
                         onClick = { event.invoke(HomeContract.Event.OnSelectCurrency(state.currencyType)) }
                     ) {
                         Text(
                             modifier = Modifier.padding(4.dp),
-                            text = "Try again",
-                            color = Color.White,
+                            text = stringResource(Res.string.home_error_button),
+                            color = MaterialTheme.colorScheme.onTertiary,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -136,7 +127,7 @@ private fun Content(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(Colors().background)
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
     ) {
         item {
@@ -161,15 +152,9 @@ private fun Content(
         item {
             Text(
                 modifier = Modifier.padding(top = 30.dp, bottom = 8.dp),
-                text = "Transactions",
-                style = TextStyle(fontWeight = FontWeight.SemiBold).copy(
-                    lineHeightStyle = LineHeightStyle(
-                        alignment = LineHeightStyle.Alignment.Center,
-                        trim = LineHeightStyle.Trim.Both,
-                    )
-                ),
-                color = Color.Black,
-                fontSize = 22.sp,
+                text = stringResource(Res.string.home_transaction_label),
+                style = MaterialTheme.typography.titleMedium.copy(fontSize = 22.sp),
+                color = MaterialTheme.colorScheme.onBackground,
             )
         }
 

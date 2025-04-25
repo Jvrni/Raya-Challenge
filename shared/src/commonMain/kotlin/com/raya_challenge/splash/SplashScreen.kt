@@ -12,13 +12,13 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.designsystem.theme.Colors
 import com.raya_challenge.splash.contract.SplashContract
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
@@ -35,7 +35,7 @@ fun SplashScreen(
     val animationVisibility = remember { mutableStateOf(false) }
 
     Row(
-        modifier = Modifier.fillMaxSize().background(Colors().background),
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {

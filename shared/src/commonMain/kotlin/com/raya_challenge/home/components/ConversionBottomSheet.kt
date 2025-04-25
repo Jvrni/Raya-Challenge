@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetState
@@ -21,18 +22,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import raya_challenge.shared.generated.resources.Res
+import raya_challenge.shared.generated.resources.home_bottom_sheet_title
 import raya_challenge.shared.generated.resources.ic_arrow_right_duo
 import raya_challenge.shared.generated.resources.ic_close
 
@@ -50,7 +49,7 @@ fun ConversionBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = modalBottomSheetState,
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.background,
         dragHandle = { BottomSheetDefaults.DragHandle() },
     ) {
         Column(
@@ -66,16 +65,10 @@ fun ConversionBottomSheet(
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth().weight(1f).padding(start = 24.dp),
-                    text = "Conversion",
-                    color = Color.Black,
+                    text = stringResource(Res.string.home_bottom_sheet_title),
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center,
-                    fontSize = 20.sp,
-                    style = TextStyle(fontWeight = FontWeight.Medium).copy(
-                        lineHeightStyle = LineHeightStyle(
-                            alignment = LineHeightStyle.Alignment.Center,
-                            trim = LineHeightStyle.Trim.Both,
-                        )
-                    )
+                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp)
                 )
 
                 Image(
@@ -83,7 +76,7 @@ fun ConversionBottomSheet(
                         .clickable { onDismissRequest.invoke() },
                     painter = painterResource(Res.drawable.ic_close),
                     contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Black)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
                 )
             }
 
@@ -114,7 +107,7 @@ fun ConversionBottomSheet(
                         .padding(horizontal = 12.dp),
                     painter = painterResource(Res.drawable.ic_arrow_right_duo),
                     contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Black)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
                 )
 
                 OutlinedTextField(
