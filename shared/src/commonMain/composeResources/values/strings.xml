@@ -1,0 +1,13 @@
+<resources>
+    <string name="home_header_usd_label">USD</string>
+    <string name="home_header_ars_label">ARS</string>
+    <string name="home_card_balance_label">Balance</string>
+    <string name="home_card_balance_in_bitcoin_label">In Bitcoin</string>
+    <string name="home_card_balance_in_ethereum_label">In Ethereum</string>
+    <string name="home_transaction_label">Transactions</string>
+    <string name="home_bottom_sheet_title">Conversion</string>
+    <string name="home_symbol_price">$</string>
+    <string name="home_error_title">Oops!</string>
+    <string name="home_error_description">An unexpected error has occurred. \nPlease try again!</string>
+    <string name="home_error_button">Try again</string>
+</resources>

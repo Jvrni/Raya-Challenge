@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinX.serialization)
+    id("dev.mokkery") version "2.5.1"
 }
 
 kotlin {
@@ -32,15 +33,17 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(project(":core:service"))
+            implementation(project(":core:domain"))
             implementation(project(":core:common:designSystem"))
             implementation(project(":core:common:navigation"))
-            implementation(project(":core:domain"))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.material3)
             implementation(compose.ui)
+            implementation(libs.koin.compose)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
@@ -49,6 +52,7 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
         }
     }
 }
